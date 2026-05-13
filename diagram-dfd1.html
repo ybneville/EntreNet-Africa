@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level 1 DFD | EntreNet Africa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #202124; }
+        header { background: #003d5c; color: white; padding: 24px 20px; }
+        nav { padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+        nav a { margin-right: 18px; color: #0067c5; text-decoration: none; font-weight: 600; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 960px; margin: 24px auto; padding: 0 20px 40px; }
+        .mermaid { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 18px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'linear' } });</script>
+</head>
+<body>
+<header>
+    <h1>Level 1 DFD</h1>
+    <p>Detailed data flow diagram for the main system processes.</p>
+</header>
+<nav>
+    <a href="diagram-index.html">Index</a>
+    <a href="diagram-sequence.html">Sequence</a>
+    <a href="diagram-usecase.html">Use Case</a>
+    <a href="diagram-dfd0.html">Level 0 DFD</a>
+    <a href="diagram-erd.html">ERD</a>
+</nav>
+<main>
+    <div class="mermaid">
+flowchart LR
+    subgraph External
+      U[User]
+      A[Admin]
+    end
+    subgraph Processes
+      P1[Authenticate / Session]
+      P2[Idea Posting / Browsing]
+      P3[Review & Report]
+      P4[Admin Management]
+    end
+    subgraph DataStores
+      D1[(Users)]
+      D2[(Posts)]
+      D3[(Reviews)]
+      D4[(Reports)]
+    end
+    U -->|login/register| P1
+    P1 --> D1
+    U -->|post idea/view ideas| P2
+    P2 --> D2
+    U -->|write review/report| P3
+    P3 --> D3
+    P3 --> D4
+    A -->|manage users/posts/reports| P4
+    P4 --> D1
+    P4 --> D2
+    P4 --> D3
+    P4 --> D4
+    </div>
+</main>
+</body>
+</html>

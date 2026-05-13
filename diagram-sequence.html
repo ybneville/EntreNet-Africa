@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sequence Diagram | EntreNet Africa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #202124; }
+        header { background: #003d5c; color: white; padding: 24px 20px; }
+        nav { padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+        nav a { margin-right: 18px; color: #0067c5; text-decoration: none; font-weight: 600; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 960px; margin: 24px auto; padding: 0 20px 40px; }
+        .mermaid { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 18px; }
+        .note { margin-top: 16px; color: #4b5563; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'linear' } });</script>
+</head>
+<body>
+<header>
+    <h1>Sequence Diagram</h1>
+    <p>EntreNet Africa login interaction sequence.</p>
+</header>
+<nav>
+    <a href="diagram-index.html">Index</a>
+    <a href="diagram-usecase.html">Use Case</a>
+    <a href="diagram-dfd0.html">Level 0 DFD</a>
+    <a href="diagram-dfd1.html">Level 1 DFD</a>
+    <a href="diagram-erd.html">ERD</a>
+</nav>
+<main>
+    <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Database
+    User->>Browser: Enter login info
+    Browser->>Server: Send login request
+    Server->>Database: Retrieve user record
+    Database-->>Server: Return user data
+    Server->>Server: Check password and session
+    alt login succeeds
+      Server-->>Browser: Send success and redirect
+      Browser-->>User: Show dashboard
+    else login fails
+      Server-->>Browser: Send error message
+      Browser-->>User: Show login error
+    end
+    </div>
+    <p class="note">A simple flow from the user entering credentials through server validation and response.</p>
+</main>
+</body>
+</html>

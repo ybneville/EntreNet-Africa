@@ -1,0 +1,189 @@
+﻿=== Sequence Diagram for User Login ===
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Database
+    User->>Browser: Enter credentials
+    Browser->>Server: POST /login
+    Server->>Database: SELECT user WHERE full_name
+    Database-->>Server: User record
+    Server->>Server: Verify password
+    alt password valid
+      Server->>Database: UPDATE last_login
+      Server-->>Browser: Set session cookie, redirect
+      Browser-->>User: Redirect to dashboard
+    else invalid
+      Server-->>Browser: Error message
+      Browser-->>User: Show error
+    end
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJx1kcFOwzAMhu9IvIMfgIl7D5OARuKAtGlt4Th5rbdFpMmw01W8PSlNqgIlx9-ff_92hD46sjXlGk-M7e0NhHdB9rrWF7QeKiH-qz6y6xcLBfF1Sc_R4wGFxspgulqvo0sGynpiqJkasl6jkRGL9UCOthlsN0UJ98adtB2RsRCINCCDQr2opxK60Alvz2qn4NgZs7fYxukJXc2Mh0TAVDtufhkn4pVYHz_DUiL9RKHxkwJXNDrqi8Gqbf5QKjAofj9bYWLnFynIg5CIdhZq59413YV4jQ4RfWpL5wl91XfTLgLgHTQo54PDFJSMEGi7FPHHRzA7hjYMxhP9O6c4ux5oQKO5bb4A
+
+=== Class Diagram (if applicable) ===
+classDiagram
+    class User {
+      +int user_id
+      +string full_name
+      +string email
+      +string password_hash
+      +string role
+      +bool is_admin
+      +datetime last_login
+      +login()
+      +logout()
+      +editProfile()
+    }
+    class IdeaPost {
+      +int post_id
+      +int user_id
+      +string title
+      +string description
+      +datetime created_at
+      +createPost()
+      +editPost()
+    }
+    class Review {
+      +int review_id
+      +int user_id
+      +int post_id
+      +int rating
+      +string review_text
+      +datetime created_at
+      +submitReview()
+    }
+    class Report {
+      +int report_id
+      +int user_id
+      +int post_id
+      +string report_text
+      +datetime reported_at
+      +submitReport()
+    }
+    User "1" -- "*" IdeaPost : creates
+    User "1" -- "*" Review : writes
+    User "1" -- "*" Report : files
+    IdeaPost "1" -- "*" Review : receives
+    IdeaPost "1" -- "*" Report : isReportedIn
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJydkz1vgzAQhvdK_Q8npn4oQ1fmLtmiSJ2Rgy_kJIPR-QiVqv73GkOJ6xBalQk_dzqe1zalUc69kqpY1fd34J9yIPDmkOFjJADP1Ah0HhWkZ-aEqang2BlTNKrGtIC1IpPC1g_vLevipNwpLbI1lykHaw2QK5SuqZmpVoJCNYK3lMLYKqqF1cNjvLadRAA1yY7tkQx-08849Faj2lknSfDWozj4ymYIibnaCI2uZGqF7EKOktG_6kLJXBvRIJK6R-iH-B7PhH2izQH-Jn4rICvx7lcnNM4UfJc_RXHdoSYZ9W6Yt5bTDecA_2M-a4YBy5pjcdlzqCSe4U_IXjLYbCB7yi6XJJ8Cu-W-6Uxy6JlWmkL8HIY7OfXMH1gaxlginddbp5Hk9lPSbfMF
+
+=== Use Case Diagram ===
+usecaseDiagram
+    actor User
+    actor Admin
+    User -- (Register)
+    User -- (Login)
+    User -- (Create Idea Post)
+    User -- (Browse Ideas)
+    User -- (Review Idea)
+    User -- (Report Content)
+    User -- (Edit Profile)
+    Admin -- (Manage Users)
+    Admin -- (Moderate Content)
+    Admin -- (View Reports)
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJxlz8EKwjAMBuC74Dvk6A57CJ0eBAUZ6D2ssQRcI0l0r6_rBLXLrf8XkvRh1KHRljEq9ssFvAs7F4Wzkf6-16HnNAUjQV3DqqXI5qRVkR8kcirDRgmdYB8I4STmpW9UBpvcSmvpyTRkm9Nd1KGR5JRmQ3eBHU4qV77Rx_JHMh4xYaTcbHOUQDoe_D_523AZL5q2W_UC
+
+=== Level 1 Data Flow Diagram ===
+flowchart LR
+    subgraph External
+      U[User]
+      A[Admin]
+    end
+    subgraph Processes
+      P1[Authenticate / Session]
+      P2[Idea Posting / Browsing]
+      P3[Review & Report]
+      P4[Admin Management]
+    end
+    subgraph DataStores
+      D1[(Users)]
+      D2[(Posts)]
+      D3[(Reviews)]
+      D4[(Reports)]
+    end
+    U -->|login/register| P1
+    P1 --> D1
+    U -->|post idea/view ideas| P2
+    P2 --> D2
+    U -->|write review/report| P3
+    P3 --> D3
+    P3 --> D4
+    A -->|manage users/posts/reports| P4
+    P4 --> D1
+    P4 --> D2
+    P4 --> D3
+    P4 --> D4
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJx1ULtqxDAQ7AP5h62CUxzGjzrgcCkCCRgfrkQKxbfnE9iSkeQ4xX18VpafB1Gl2d3ZmZ1Lo4bqyrWFj-LxAeiZ_rvWvLvC269FLXnjywAlKw3qrxlmLDu3Qk4Y5fmOnmtVoTFoZkIesay3V5RWVNwihHCivlByWZnH7P2MHHJlrJA1TbxqNRj6riMJK_BH4ABPUGCntF1bqXcEn1zyGlsS-tfckVt-skqv7o4RC9x95nlZeIxZ4KxsSwkLvP62mLqi87IUF8USDoeXW6NqIUONtTCU6Y2i8N08cm3S3g53JAmCcgjHO93PECWeKLGnxFvKoAUFqkdjJOOsECOZGIln3MHUw2xc0I6RQe8CCJ0BM61xytNknu7MzjDew2QP0z8
+
+=== Level 0 Data Flow Diagram (Context Diagram) ===
+flowchart LR
+    User[(User)] -->|Register / Login / Post Idea| System[EntreNet Africa System]
+    Admin[(Admin)] -->|Manage Users / Reports| System
+    System -->|Display Pages / Results| User
+    System -->|Display Admin Dashboard| Admin
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJx1jbEKg0AMhvdC3yGjHaRvIAh2KNgilk7ikGrUA72T5EoRfPied3Zshvwh-fP93Wg-zYBsIS-PB3D1FOIq2vqphjhO1pJ6JZYYzpCbXmmnhREL15ZwhcfiblN10ZbpThbSjlWD-7oOyLSdlK4iLzv0hhp78mHigCXNhq38cOEtzN6eKZlHXKBwT8Ev73Hzb4C_bh8IGcrwMsjtGhZf
+
+=== System Architecture Diagram ===
+flowchart LR
+    A[User Browser] -->|HTTP(S)| B[Web Server (PHP)]
+    B -->|Queries| C[(MySQL Database)]
+    B -->|Serves HTML/CSS/JS| A
+    subgraph Localhost (XAMPP)
+      B
+      C
+    end
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJxVjEEKwjAURPeCd_jLdFF6A6GtiyIJpP6KQukirV8jFCNJaxFyeEODC2czA_NmbqNZBq3sBPy43UBQ3p4cWSisWYJ3kKY7XzWNZJh4KNoz9YBk3wFhspJJF1fFytUz2Qc5D2XLxAdrDns1qV45-ufWAwdVI3hWImYH9JBHwM393aqXBm4GNWrjJmCXXEiZxD5c_EIZAz2vXw
+
+=== Entity Relationship Diagram (ERD) ===
+erDiagram
+    USERS {
+      int user_id PK
+      string full_name
+      string email
+      string password_hash
+      string role
+      bool is_admin
+      datetime last_login
+    }
+    POSTS {
+      int post_id PK
+      int user_id FK
+      string title
+      text description
+      datetime created_at
+    }
+    REVIEWS {
+      int review_id PK
+      int user_id FK
+      int post_id FK
+      int rating
+      text review_text
+      datetime created_at
+    }
+    REPORTS {
+      int report_id PK
+      int user_id FK
+      int post_id FK
+      text report_text
+      datetime reported_at
+    }
+    USERS ||--o{ POSTS : "creates"
+    USERS ||--o{ REVIEWS : "writes"
+    USERS ||--o{ REPORTS : "files"
+    POSTS ||--o{ REVIEWS : "receives"
+    POSTS ||--o{ REPORTS : "is reported in"
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJyNkk1ugzAQhfeVegeLfS7QdYlUdREE_VlaLp6QkQxG40mIlPTudWugwRAJb2y_eXr6ZmygZ1QVqfrxQfj1XqR5IS7hIgQ2LI4OSKIW2eugOiZsKrE_GiMbVUOkQ63QRFqrnOssaXlQ7hDVyJox4staI9BJpWtsBlErBsYahFGOpbHVUPoOW7Yr3iLo1nrnBPq2lW3cCiP_MzCcWWhwJWHLaOcYJYE_aql4gpGnHy_pZwRCcELo1qDcYk9VUuwhJ3h97O95PV62y-M5EbSWVk1qGa-H-QtZhAm1OU34aNfrZmMv_QM-iSSgu2TBM0zXuzrCu6bQozft0YyekD8PIigBT_dsYxS6sQ0_huQH
+
+=== Activity Diagram for User Idea Posting ===
+flowchart TD
+    Start((Start)) --> Login["Login/Authenticate"]
+    Login -->|Success| Dashboard["View Dashboard"]
+    Dashboard --> Create["Create New Idea"]
+    Create --> Input["Enter Title & Description"]
+    Input --> Submit["Submit Idea"]
+    Submit --> Save["Save to Database"]
+    Save --> Confirm["Show Confirmation"]
+    Confirm --> End((End))
+    Login -->|Fail| Error["Show Error"] --> End
+Mermaid Live Editor: https://mermaid.live/edit#pako:eJxdUMFqwzAMvQ_6D8KHkhzK_qAwmgwKY5eUXkIPiuMugtQutrJc8vFzlLjd5oOe9PyeJPvau1F36BlOxeYF4qk4VlkmkOew2-3hw32RrZXA69vAnbFMGtmoy-KRm1k6VYPWJoQJCgxd49C3tTqTGZ918jwIGXHwJvar1YLwGR3H1mASr_SsPNr7wLUqLRsPJ-LewBYKE7SnO5OzySI6cVRDc6NoWfBP35USFX7H-XMEdnE7xgbD44XCy6LOXsnforJzY6rw9-CVE3Vp2yyLIc__f9Q7Uj9B6b3zay_J1SX5fgA
+
+

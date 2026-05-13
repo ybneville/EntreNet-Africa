@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Level 0 DFD | EntreNet Africa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #202124; }
+        header { background: #003d5c; color: white; padding: 24px 20px; }
+        nav { padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+        nav a { margin-right: 18px; color: #0067c5; text-decoration: none; font-weight: 600; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 960px; margin: 24px auto; padding: 0 20px 40px; }
+        .mermaid { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 18px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'linear' } });</script>
+</head>
+<body>
+<header>
+    <h1>Level 0 DFD</h1>
+    <p>Context diagram for the EntreNet Africa system.</p>
+</header>
+<nav>
+    <a href="diagram-index.html">Index</a>
+    <a href="diagram-sequence.html">Sequence</a>
+    <a href="diagram-usecase.html">Use Case</a>
+    <a href="diagram-dfd1.html">Level 1 DFD</a>
+    <a href="diagram-erd.html">ERD</a>
+</nav>
+<main>
+    <div class="mermaid">
+flowchart LR
+    User[(User)] -->|Register / Login / Post Idea| System["EntreNet Africa System"]
+    Admin[(Admin)] -->|Manage Users / Reports| System
+    System -->|Display Pages / Results| User
+    System -->|Display Admin Dashboard| Admin
+    </div>
+</main>
+</body>
+</html>

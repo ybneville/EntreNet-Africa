@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EntreNet Africa Diagrams</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #202124; }
+        header { background: #003d5c; color: white; padding: 28px 20px; text-align: center; }
+        main { max-width: 920px; margin: 24px auto; padding: 0 20px 40px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 24px; }
+        .card { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 10px 24px rgba(0,0,0,.08); }
+        .card h2 { margin-top: 0; color: #003550; }
+        .card a { color: #0067c5; text-decoration: none; font-weight: 600; }
+        .card a:hover { text-decoration: underline; }
+        p { line-height: 1.7; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>EntreNet Africa Diagram Library</h1>
+    <p>Open any diagram in its own browser page using the links below.</p>
+</header>
+<main>
+    <p>Each diagram page contains a Mermaid render of the system design. Use these pages for documentation, review, or presentation.</p>
+    <div class="grid">
+        <div class="card">
+            <h2>Sequence Diagram</h2>
+            <p>Visualizes the login interaction between user, browser, server, and database.</p>
+            <a href="diagram-sequence.html">Open Sequence Diagram</a>
+        </div>
+        <div class="card">
+            <h2>Use Case Diagram</h2>
+            <p>Shows the system actors and primary use cases for users and administrators.</p>
+            <a href="diagram-usecase.html">Open Use Case Diagram</a>
+        </div>
+        <div class="card">
+            <h2>Level 0 DFD</h2>
+            <p>Context-level flow diagram showing the system and external actors.</p>
+            <a href="diagram-dfd0.html">Open Level 0 DFD</a>
+        </div>
+        <div class="card">
+            <h2>Level 1 DFD</h2>
+            <p>Breaks down the main processes, data stores, and external flows.</p>
+            <a href="diagram-dfd1.html">Open Level 1 DFD</a>
+        </div>
+        <div class="card">
+            <h2>ERD</h2>
+            <p>Displays the main database entities and their relationships.</p>
+            <a href="diagram-erd.html">Open ERD</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

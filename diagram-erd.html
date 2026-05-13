@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ERD | EntreNet Africa</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f7fb; color: #202124; }
+        header { background: #003d5c; color: white; padding: 24px 20px; }
+        nav { padding: 16px 20px; background: #ffffff; border-bottom: 1px solid #e2e8f0; }
+        nav a { margin-right: 18px; color: #0067c5; text-decoration: none; font-weight: 600; }
+        nav a:hover { text-decoration: underline; }
+        main { max-width: 960px; margin: 24px auto; padding: 0 20px 40px; }
+        .mermaid { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 18px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'linear' } });</script>
+</head>
+<body>
+<header>
+    <h1>Entity Relationship Diagram</h1>
+    <p>Main entities and relationships for EntreNet Africa.</p>
+</header>
+<nav>
+    <a href="diagram-index.html">Index</a>
+    <a href="diagram-sequence.html">Sequence</a>
+    <a href="diagram-usecase.html">Use Case</a>
+    <a href="diagram-dfd0.html">Level 0 DFD</a>
+    <a href="diagram-dfd1.html">Level 1 DFD</a>
+</nav>
+<main>
+    <div class="mermaid">
+erDiagram
+    USERS {
+      int user_id PK
+      string full_name
+      string email
+      string password_hash
+      string role
+      datetime created_at
+      datetime last_login
+    }
+    POSTS {
+      int post_id PK
+      int user_id FK
+      string title
+      text description
+      datetime created_at
+      bool is_active
+    }
+    REVIEWS {
+      int review_id PK
+      int post_id FK
+      int user_id FK
+      int rating
+      text review_text
+      datetime created_at
+    }
+    REPORTS {
+      int report_id PK
+      int post_id FK
+      int user_id FK
+      text report_text
+      datetime reported_at
+      string status
+    }
+    USERS ||--o{ POSTS : creates
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ REPORTS : files
+    POSTS ||--o{ REVIEWS : receives
+    POSTS ||--o{ REPORTS : is_reported_in
+    </div>
+</main>
+</body>
+</html>

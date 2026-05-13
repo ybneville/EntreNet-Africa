@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EntreNet Africa - Browser Diagrams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f0f2f5;
+            color: #222;
+        }
+        header {
+            background: #005a8c;
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+        main {
+            max-width: 1040px;
+            margin: 24px auto;
+            padding: 0 20px 40px;
+        }
+        section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 14px rgba(0,0,0,.08);
+            margin-bottom: 24px;
+            padding: 24px;
+        }
+        h2 {
+            color: #003d5c;
+        }
+        .mermaid {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            padding: 18px;
+            border-radius: 8px;
+        }
+        .code-block {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background: #232323;
+            color: #f8f8f2;
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+        .login-sample {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .login-card {
+            flex: 1 1 320px;
+            min-width: 300px;
+            max-width: 420px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 24px;
+            background: #fff;
+        }
+        .login-card label {
+            display: block;
+            margin-top: 14px;
+            font-weight: 600;
+        }
+        .login-card input,
+        .login-card button {
+            width: 100%;
+            display: block;
+            margin-top: 6px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        .login-card button {
+            background: #0077c2;
+            border-color: #0062a3;
+            color: white;
+            cursor: pointer;
+        }
+        .login-card button:hover {
+            background: #005a8c;
+        }
+        .message {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .message.success {
+            background: #e6f4ea;
+            color: #1f5f33;
+            border: 1px solid #a4d6ab;
+        }
+        .message.error {
+            background: #fde6e8;
+            color: #8b1f28;
+            border: 1px solid #e0a7ab;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'base', flowchart: { curve: 'linear' } });
+    </script>
+</head>
+<body>
+<header>
+    <h1>EntreNet Africa - Browser Diagrams</h1>
+    <p>Level 0 &amp; Level 1 DFD, Use Case, Sequence, and ERD rendered in the browser.</p>
+</header>
+<main>
+    <section>
+        <h2>Sequence Diagram: User Login</h2>
+        <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Server
+    participant Database
+    User->>Browser: Enter credentials
+    Browser->>Server: POST /login
+    Server->>Database: SELECT user WHERE full_name = ?
+    Database-->>Server: User record
+    Server->>Server: Verify password hash
+    alt password valid
+      Server->>Database: UPDATE last_login
+      Server-->>Browser: Set session cookie, redirect
+      Browser-->>User: Redirect to dashboard
+    else invalid
+      Server-->>Browser: Error message
+      Browser-->>User: Show error
+    end
+        </div>
+    </section>
+
+    <section>
+        <h2>Use Case Diagram</h2>
+        <div class="mermaid">
+usecaseDiagram
+    actor User
+    actor Admin
+    User -- (Register)
+    User -- (Login)
+    User -- (Create Idea Post)
+    User -- (Browse Ideas)
+    User -- (Review Idea)
+    User -- (Report Content)
+    User -- (Edit Profile)
+    Admin -- (Manage Users)
+    Admin -- (Moderate Content)
+    Admin -- (View Reports)
+        </div>
+    </section>
+
+    <section>
+        <h2>Level 0 DFD (Context Diagram)</h2>
+        <div class="mermaid">
+flowchart LR
+    User[(User)] -->|Register / Login / Post Idea| System["EntreNet Africa System"]
+    Admin[(Admin)] -->|Manage Users / Reports| System
+    System -->|Display Pages / Results| User
+    System -->|Display Admin Dashboard| Admin
+        </div>
+    </section>
+
+    <section>
+        <h2>Level 1 DFD</h2>
+        <div class="mermaid">
+flowchart LR
+    subgraph External
+      U[User]
+      A[Admin]
+    end
+    subgraph Processes
+      P1[Authenticate / Session]
+      P2[Idea Posting / Browsing]
+      P3[Review & Report]
+      P4[Admin Management]
+    end
+    subgraph DataStores
+      D1[(Users)]
+      D2[(Posts)]
+      D3[(Reviews)]
+      D4[(Reports)]
+    end
+    U -->|login/register| P1
+    P1 --> D1
+    U -->|post idea/view ideas| P2
+    P2 --> D2
+    U -->|write review/report| P3
+    P3 --> D3
+    P3 --> D4
+    A -->|manage users/posts/reports| P4
+    P4 --> D1
+    P4 --> D2
+    P4 --> D3
+    P4 --> D4
+        </div>
+    </section>
+
+    <section>
+        <h2>Entity Relationship Diagram (ERD)</h2>
+        <div class="mermaid">
+erDiagram
+    USERS {
+      int user_id PK
+      string full_name
+      string email
+      string password_hash
+      string role
+      bool is_admin
+      datetime last_login
+    }
+    POSTS {
+      int post_id PK
+      int user_id FK
+      string title
+      text description
+      datetime created_at
+    }
+    REVIEWS {
+      int review_id PK
+      int user_id FK
+      int post_id FK
+      int rating
+      text review_text
+      datetime created_at
+    }
+    REPORTS {
+      int report_id PK
+      int user_id FK
+      int post_id FK
+      text report_text
+      datetime reported_at
+    }
+    USERS ||--o{ POSTS : "creates"
+    USERS ||--o{ REVIEWS : "writes"
+    USERS ||--o{ REPORTS : "files"
+    POSTS ||--o{ REVIEWS : "receives"
+    POSTS ||--o{ REPORTS : "is reported in"
+        </div>
+    </section>
+
+    <section>
+        <h2>Browser-Ready Sample: Login Form</h2>
+        <div class="login-sample">
+            <div class="login-card">
+                <h3>Sample Login</h3>
+                <form id="loginForm">
+                    <label for="username">Full Name</label>
+                    <input type="text" id="username" name="username" required placeholder="Enter full name">
+
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="Enter password">
+
+                    <button type="submit">Login</button>
+                </form>
+                <div id="loginMessage" class="message" style="display:none"></div>
+            </div>
+            <div class="login-card">
+                <h3>How it works</h3>
+                <p>This demo validates credentials in the browser and displays a message. It is not a replacement for a real server-based login.</p>
+                <ul>
+                    <li>Username: <strong>alice</strong></li>
+                    <li>Password: <strong>secret123</strong></li>
+                </ul>
+            </div>
+        </div>
+        <pre class="code-block"><code>&lt;form id="loginForm"&gt;
+    &lt;label for="username"&gt;Full Name&lt;/label&gt;
+    &lt;input type="text" id="username" required&gt;
+    &lt;label for="password"&gt;Password&lt;/label&gt;
+    &lt;input type="password" id="password" required&gt;
+    &lt;button type="submit"&gt;Login&lt;/button&gt;
+&lt;/form&gt;
+&lt;script&gt;
+const validUser = { username: 'alice', password: 'secret123' };
+const form = document.getElementById('loginForm');
+const loginMessage = document.getElementById('loginMessage');
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = form.username.value.trim();
+    const password = form.password.value;
+    if (username === validUser.username && password === validUser.password) {
+        loginMessage.textContent = 'Login successful. Redirecting to dashboard...';
+        loginMessage.className = 'message success';
+        loginMessage.style.display = 'block';
+    } else {
+        loginMessage.textContent = 'Invalid credentials. Please try again.';
+        loginMessage.className = 'message error';
+        loginMessage.style.display = 'block';
+    }
+});
+&lt;/script&gt;</code></pre>
+    </section>
+</main>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const username = this.username.value.trim();
+        const password = this.password.value;
+        const loginMessage = document.getElementById('loginMessage');
+        if (username === 'alice' && password === 'secret123') {
+            loginMessage.textContent = 'Login successful. Redirecting to dashboard...';
+            loginMessage.className = 'message success';
+            loginMessage.style.display = 'block';
+        } else {
+            loginMessage.textContent = 'Invalid credentials. Please try again.';
+            loginMessage.className = 'message error';
+            loginMessage.style.display = 'block';
+        }
+    });
+</script>
+</body>
+</html>
