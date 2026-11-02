@@ -91,6 +91,7 @@ Many African entrepreneurs struggle to access mentorship, funding, and networkin
 
 ---
 
+
 ## 👤 Author
 
 Developed as a business networking and entrepreneurship support system focused on empowering African entrepreneurs through technology.
